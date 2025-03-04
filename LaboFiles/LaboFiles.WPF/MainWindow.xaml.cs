@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -16,6 +17,7 @@ namespace LaboFiles.WPF;
 /// </summary>
 public partial class MainWindow : Window
 {
+    const string fileName = "personen.txt";
     public MainWindow()
     {
         InitializeComponent();
@@ -32,5 +34,17 @@ public partial class MainWindow : Window
         }
         firstNameListBox.Items.Add(firstNameTextBox.Text);
         lastNameListBox.Items.Add(lastNameTextBox.Text);
+    }
+
+    private void saveFileButton_Click(object sender, RoutedEventArgs e)
+    {
+        using (FileStream fs = new FileStream(fileName, FileMode.Append, FileAccess.Write))
+        using (StreamWriter sw = new StreamWriter(fs))
+        {
+            for (int i = 0; i < firstNameListBox.Items.Count; i++)
+            {
+                sw.WriteLine($"{firstNameListBox.Items[i]},{lastNameListBox.Items[i]}");
+            }
+        }
     }
 }
