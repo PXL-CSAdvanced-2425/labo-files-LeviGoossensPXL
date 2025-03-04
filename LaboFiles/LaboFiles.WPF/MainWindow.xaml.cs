@@ -18,6 +18,7 @@ namespace LaboFiles.WPF;
 public partial class MainWindow : Window
 {
     const string fileName = "personen.txt";
+    const char sepChar = ',';
     public MainWindow()
     {
         InitializeComponent();
@@ -38,12 +39,26 @@ public partial class MainWindow : Window
 
     private void saveFileButton_Click(object sender, RoutedEventArgs e)
     {
-        using (FileStream fs = new FileStream(fileName, FileMode.Append, FileAccess.Write))
+        using (FileStream fs = new FileStream(fileName, FileMode.Create, FileAccess.Write))
         using (StreamWriter sw = new StreamWriter(fs))
         {
             for (int i = 0; i < firstNameListBox.Items.Count; i++)
             {
-                sw.WriteLine($"{firstNameListBox.Items[i]},{lastNameListBox.Items[i]}");
+                sw.WriteLine($"{firstNameListBox.Items[i]}{sepChar}{lastNameListBox.Items[i]}");
+            }
+        }
+    }
+
+    private void readFileButton_Click(object sender, RoutedEventArgs e)
+    {
+        using (FileStream fs = new FileStream(fileName, FileMode.Open, FileAccess.Read))
+        using (StreamReader sr = new StreamReader(fs))
+        {
+            while (!sr.EndOfStream)
+            {
+                string[] contents = sr.ReadLine().Split(sepChar);
+                firstNameListBox.Items.Add(contents[0]);
+                lastNameListBox.Items.Add(contents[1]);
             }
         }
     }
