@@ -44,27 +44,37 @@ public partial class MainWindow : Window
 
     private void saveFileButton_Click(object sender, RoutedEventArgs e)
     {
-        SaveFileDialog sfd = new SaveFileDialog()
-        {
-            Filter = "Alle bestanden|*.*|Tekstbestanden|*.txt|CSV bestanden|*.csv",
-            FilterIndex = 2,
-            Title = "Opslaan Personen Info",
-            OverwritePrompt = true,
-            AddExtension = true,
-            FileName = fileName,
-            InitialDirectory = Environment.CurrentDirectory
-        };
-        if (sfd.ShowDialog() == true)
-        {
-            using (FileStream fs = new FileStream(sfd.FileName, FileMode.Create, FileAccess.Write))
-            using (StreamWriter sw = new StreamWriter(fs))
+        try {
+            SaveFileDialog sfd = new SaveFileDialog()
             {
-                for (int i = 0; i < firstNameListBox.Items.Count; i++)
+                Filter = "Alle bestanden|*.*|Tekstbestanden|*.txt|CSV bestanden|*.csv",
+                FilterIndex = 2,
+                Title = "Opslaan Personen Info",
+                OverwritePrompt = true,
+                AddExtension = true,
+                FileName = fileName,
+                InitialDirectory = Environment.CurrentDirectory
+            };
+            if (sfd.ShowDialog() == true)
+            {
+                using (FileStream fs = new FileStream(sfd.FileName, FileMode.Create, FileAccess.Write))
+                using (StreamWriter sw = new StreamWriter(fs))
                 {
-                    sw.WriteLine($"{firstNameListBox.Items[i]}{sepChar}{lastNameListBox.Items[i]}");
+                    for (int i = 0; i < firstNameListBox.Items.Count; i++)
+                    {
+                        sw.WriteLine($"{firstNameListBox.Items[i]}{sepChar}{lastNameListBox.Items[i]}");
+                    }
                 }
+                MessageBox.Show($"Personen data opgeslagen naar {sfd.FileName}.");
             }
-            MessageBox.Show($"Personen data opgeslagen naar {sfd.FileName}.");
+        }
+        catch (IOException)
+        {
+            MessageBox.Show("fout bij schrijven naar bestand");
+        }
+        catch (Exception)
+        {
+            MessageBox.Show("Onverwachte fout");
         }
     }
 
