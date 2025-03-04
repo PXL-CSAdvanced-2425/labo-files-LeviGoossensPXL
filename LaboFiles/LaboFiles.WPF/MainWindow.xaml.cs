@@ -20,4 +20,17 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
     }
+
+    private void addButton_Click(object sender, RoutedEventArgs e)
+    {
+        bool firstNameIsEmpty = string.IsNullOrWhiteSpace(firstNameTextBox.Text);
+        bool lastNameIsEmpty = string.IsNullOrWhiteSpace(lastNameTextBox.Text);
+        if (firstNameIsEmpty || lastNameIsEmpty)
+        {
+            MessageBox.Show("voornaam of achternaam is leeg.");
+            return;
+        }
+        firstNameListBox.Items.Add(firstNameTextBox.Text);
+        lastNameListBox.Items.Add(lastNameTextBox.Text);
+    }
 }
