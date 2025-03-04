@@ -36,6 +36,10 @@ public partial class MainWindow : Window
         }
         firstNameListBox.Items.Add(firstNameTextBox.Text);
         lastNameListBox.Items.Add(lastNameTextBox.Text);
+
+        firstNameTextBox.Clear();
+        lastNameTextBox.Clear();
+        firstNameTextBox.Focus();
     }
 
     private void saveFileButton_Click(object sender, RoutedEventArgs e)
