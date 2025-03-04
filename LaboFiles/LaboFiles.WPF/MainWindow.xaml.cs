@@ -64,6 +64,7 @@ public partial class MainWindow : Window
                     sw.WriteLine($"{firstNameListBox.Items[i]}{sepChar}{lastNameListBox.Items[i]}");
                 }
             }
+            MessageBox.Show($"Personen data opgeslagen naar {sfd.FileName}.");
         }
     }
 
@@ -78,6 +79,8 @@ public partial class MainWindow : Window
         };
         if (ofd.ShowDialog() == true)
         {
+            firstNameListBox.Items.Clear();
+            lastNameListBox.Items.Clear();
             using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read))
             using (StreamReader sr = new StreamReader(fs))
             {
