@@ -80,27 +80,38 @@ public partial class MainWindow : Window
 
     private void readFileButton_Click(object sender, RoutedEventArgs e)
     {
-        OpenFileDialog ofd = new OpenFileDialog()
+        try
         {
-            Filter = "Alle bestanden|*.*|Tekstbestanden|*.txt|CSV bestanden|*.csv",
-            FilterIndex = 2,
-            Title = "Open Personen Info",
-            InitialDirectory = Environment.CurrentDirectory
-        };
-        if (ofd.ShowDialog() == true)
-        {
-            firstNameListBox.Items.Clear();
-            lastNameListBox.Items.Clear();
-            using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read))
-            using (StreamReader sr = new StreamReader(fs))
+            OpenFileDialog ofd = new OpenFileDialog()
             {
-                while (!sr.EndOfStream)
+                Filter = "Alle bestanden|*.*|Tekstbestanden|*.txt|CSV bestanden|*.csv",
+                FilterIndex = 2,
+                Title = "Open Personen Info",
+                InitialDirectory = Environment.CurrentDirectory
+            };
+            if (ofd.ShowDialog() == true)
+            {
+                firstNameListBox.Items.Clear();
+                lastNameListBox.Items.Clear();
+                using (FileStream fs = new FileStream(ofd.FileName, FileMode.Open, FileAccess.Read))
+                using (StreamReader sr = new StreamReader(fs))
                 {
-                    string[] contents = sr.ReadLine().Split(sepChar);
-                    firstNameListBox.Items.Add(contents[0]);
-                    lastNameListBox.Items.Add(contents[1]);
+                    while (!sr.EndOfStream)
+                    {
+                        string[] contents = sr.ReadLine().Split(sepChar);
+                        firstNameListBox.Items.Add(contents[0]);
+                        lastNameListBox.Items.Add(contents[1]);
+                    }
                 }
             }
+        }
+        catch (IOException)
+        {
+            MessageBox.Show("fout bij lezen van bestand");
+        }
+        catch (Exception)
+        {
+            MessageBox.Show("Onverwachte fout");
         }
     }
 }
